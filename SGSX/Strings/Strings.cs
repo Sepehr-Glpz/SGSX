@@ -65,7 +65,16 @@
             }
         }
 
-
+        public static string PersianDigitsToEn(this string text)
+        {
+            var englishCulture = new System.Globalization.CultureInfo("en-US");
+            var persianCulture = new System.Globalization.CultureInfo("fa-IR");
+            for (int index = 0; index < 10; index++)
+            {
+                text = text.Replace(persianCulture.NumberFormat.NativeDigits[index], englishCulture.NumberFormat.NativeDigits[index]);
+            }
+            return text;
+        }
 
 
     }
