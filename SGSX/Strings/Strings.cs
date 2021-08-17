@@ -65,6 +65,11 @@
             }
         }
 
+        /// <summary>
+        /// Replaces all persian number characters in a string with english characters.
+        /// </summary>
+        /// <param name="text">the text to change.</param>
+        /// <returns>the same text with all persian numbers replaced.</returns>
         public static string PersianDigitsToEn(this string text)
         {
             var englishCulture = new System.Globalization.CultureInfo("en-US");
