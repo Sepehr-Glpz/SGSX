@@ -67,16 +67,6 @@ namespace SGSX.Security.JWT
 
         private static System.Collections.Generic.List<System.Security.Claims.Claim> SetClaims(this System.Collections.Generic.List<System.Security.Claims.Claim> claims, JwtOptions options)
         {
-            if (string.IsNullOrWhiteSpace(options.Issuer) == false)
-            {
-                claims.Add(
-                    new System.Security.Claims.Claim(type: System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Iss, value: options.Issuer));
-            }
-            if (string.IsNullOrWhiteSpace(options.Audience) == false)
-            {
-                claims.Add(
-                    new System.Security.Claims.Claim(type: System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Aud, value: options.Audience));
-            }
             if (string.IsNullOrWhiteSpace(options.UniqueName) == false)
             {
                 claims.Add(
@@ -92,6 +82,9 @@ namespace SGSX.Security.JWT
                 claims.Add(
                     new System.Security.Claims.Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Name, value: options.Name));
             }
+            claims.Add(new System.Security.Claims.Claim(type: System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Jti,
+                value: options.TokenId.ToString()));
+
             return claims;
         }
 

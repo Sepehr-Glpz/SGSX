@@ -41,7 +41,7 @@ namespace SGSX.Security.JWT
         {
             var fields = typeof(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames)
                 .GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.FlattenHierarchy);
-            var specialKeys = fields.Where(current => current.IsLiteral && current.IsInitOnly)
+            var specialKeys = fields.Where(current => current.IsLiteral)
                 .Select(x => x.GetRawConstantValue() as string).ToList();
             if (specialKeys.Any(current => current.ToLower() == key.ToLower()) == true)
             {
