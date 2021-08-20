@@ -1,11 +1,11 @@
 ﻿namespace SGSX.Mediator
 {
-    public interface IRequest : MediatR.IRequest<FluentResults.Result>
+    public interface IRequest : MediatR.IRequest<Results.Result>
     {
 
     }
 
-    public interface IRequest<TValue> : MediatR.IRequest<FluentResults.Result<TValue>>
+    public interface IRequest<TValue> : MediatR.IRequest<Results.Result<TValue>>
     {
 
     }

@@ -68,13 +68,23 @@ namespace SGSX.Results
         public virtual IResult<T> ToValueResult<T>(T value)
         {
             var valueResult = new Result<T>(value);
-            if (IsFailure == true && Errors.Any() == true)
+            if (IsFailure == true)
             {
-                valueResult.WithErrorMessage(Errors);
+                valueResult.Failed();
+                if (Errors.Any() == true)
+                {
+                    valueResult.WithErrorMessage(Errors);
+                }
+                return valueResult;
             }
-            if (IsSuccess == true && Successes.Any() == true)
+            if (IsSuccess == true)
             {
-                valueResult.WithSuccessMessage(Successes);
+                valueResult.Success();
+                if (Successes.Any() == true)
+                {
+                    valueResult.WithSuccessMessage(Successes);
+                }
+                return valueResult;
             }
             return valueResult;
         }
@@ -153,18 +163,18 @@ namespace SGSX.Results
             if (IsFailure == true)
             {
                 newResult.IsFailure = true;
-                if (Errors is not null && Errors.Any() == true)
+                if (Errors.Any() == true)
                 {
-                    newResult.Errors = Errors;
+                    newResult.WithErrorMessage(Errors);
                 }
                 return newResult;
             }
             else if (IsSuccess == true)
             {
                 newResult.IsSuccess = true;
-                if (Successes is not null && Successes.Any() == true)
+                if (Successes.Any() == true)
                 {
-                    newResult.Successes = Successes;
+                    newResult.WithSuccessMessage(Successes);
                 }
                 return newResult;
             }

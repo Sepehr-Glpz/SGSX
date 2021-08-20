@@ -18,6 +18,7 @@
 
     public interface IResult<T> : IResult
     {
+        IResult ToResult();
         T Value { get; }
         IResult<T> WithValue(T value);
     }

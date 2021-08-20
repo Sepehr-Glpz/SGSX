@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SGSX.Results
 {
@@ -125,18 +123,51 @@ namespace SGSX.Results
 
         public override IResult<U> ToValueResult<U>(U value)
         {
-            var valueResult = new Result<U>(value);
-            if (IsFailure == true && Errors.Any() == true)
+            IResult<U> result = new Result<U>(value);
+            if (IsFailure == true && IsSuccess == false)
             {
-                valueResult.WithErrorMessage(Errors);
+                result.Failed();
+                if (Errors.Any() == true)
+                {
+                    result.WithErrorMessage(Errors);
+                }
+                return result;
             }
-            if (IsSuccess == true && Successes.Any() == true)
+            if (IsSuccess == true && IsFailure == false)
             {
-                valueResult.WithSuccessMessage(Successes);
+                result.Success();
+                if (Successes.Any() == true)
+                {
+                    result.WithSuccessMessage(Successes);
+                }
+                return result;
             }
-            return valueResult;
+            return result;
         }
 
+        public IResult ToResult()
+        {
+            IResult result = new Result();
+            if (IsFailure == true && IsSuccess == false)
+            {
+                result.Failed();
+                if (Errors.Any() == true)
+                {
+                    result.WithErrorMessage(Errors);
+                }
+                return result;
+            }
+            if (IsSuccess == true && IsFailure == false)
+            {
+                result.Success();
+                if (Successes.Any() == true)
+                {
+                    result.WithSuccessMessage(Successes);
+                }
+                return result;
+            }
+            return result;
+        }
 
     }
 }
