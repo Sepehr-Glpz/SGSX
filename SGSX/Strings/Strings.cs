@@ -25,7 +25,6 @@
                 text = text.Replace("  ", " ");
             }
             return text;
-            
         }
 
         /// <summary>
