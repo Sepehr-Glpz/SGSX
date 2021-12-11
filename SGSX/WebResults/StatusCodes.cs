@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
+using System.Collections.Immutable;
 namespace SGSX.WebResults
 {
     public static partial class StatusCodes
@@ -85,7 +85,25 @@ namespace SGSX.WebResults
 
         public const short Network_Authentication_Required = 511;
 
-        private static Dictionary<short, string> _statusCodes;
+        private static object _syncRoot = new object();
+        private static ImmutableDictionary<short, string> _statusCodes;
+        public static ImmutableDictionary<short, string> StatusCodes
+        {
+            get
+            {
+                lock(_syncRoot)
+                {
+
+                }
+
+
+                return _statusCodes;
+            }
+        }
+
+
+
+        //private static Dictionary<short, string> _statusCodes;
         public static Dictionary<short,string> StatusCodesDictionary
         {
             get
