@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Text.Json;
 namespace SGSX.WebResults
 {
     public static class Extensions
@@ -18,7 +19,7 @@ namespace SGSX.WebResults
 
         }
 
-        public static WebResult<T> CreateWebResult<T>(this HttpResponseMessage response,string bodyValuePath)
+        public static WebResult<T> CreateWebResult<T>(this HttpResponseMessage response,string bodyValuePath = null,JsonSerializerOptions jsonSerializerOptions = null)
         {
             if(response is null)
             {
@@ -31,7 +32,10 @@ namespace SGSX.WebResults
             WebResult<T> result = null;
             if(string.IsNullOrWhiteSpace(bodyValuePath) == false)
             {
+                using var body = response.Content.ReadAsStream();
+                using var json = JsonDocument.Parse(body);
                 var path = bodyValuePath.Split(':');
+                
             }
             else
             {
@@ -40,7 +44,13 @@ namespace SGSX.WebResults
             return result;
         }
 
-
+        private static JsonElement GetJsonElementSection(JsonElement jsonElement,string property)
+        {
+            if(jsonElement.ValueKind == JsonValueKind.Null)
+            {
+                return default(JsonElement);
+            }
+        }
 
     }
 }
