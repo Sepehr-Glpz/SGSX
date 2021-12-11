@@ -43,7 +43,7 @@ namespace SGSX.WebResults
 
         public const short Precondition_Failed = 412;
 
-        public const short Payload_Too_Large= 413;
+        public const short Payload_Too_Large = 413;
 
         public const short URI_Too_Long = 414;
 
@@ -86,40 +86,26 @@ namespace SGSX.WebResults
         public const short Network_Authentication_Required = 511;
 
         private static object _syncRoot = new object();
-        private static ImmutableDictionary<short, string> _statusCodes;
-        public static ImmutableDictionary<short, string> StatusCodes
+        private static IReadOnlyDictionary<short, string> _statusCodes;
+        public static IReadOnlyDictionary<short, string> StatusCodesDictionary
         {
             get
             {
-                lock(_syncRoot)
+                lock (_syncRoot)
                 {
-
-                }
-
-
-                return _statusCodes;
-            }
-        }
-
-
-
-        //private static Dictionary<short, string> _statusCodes;
-        public static Dictionary<short,string> StatusCodesDictionary
-        {
-            get
-            {
-                if (_statusCodes is null)
-                {
-                    var fields =
-                        typeof(StatusCodes).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
-
-                    var statuses = fields.Where(current => current.IsLiteral)
-                    .Select(x => new { Value = (short)x.GetRawConstantValue(), Name = x.Name }).ToList();
-
-                    _statusCodes = new Dictionary<short, string>();
-                    foreach(var item in statuses)
+                    if (_statusCodes is null)
                     {
-                        _statusCodes.Add(item.Value, item.Name.Replace('_',' '));
+                        var fields =
+                        typeof(StatusCodes).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+                        var statuses = fields.Where(current => current.IsLiteral)
+                        .Select(x => new { Value = (short)x.GetRawConstantValue(), Name = x.Name.Replace('-', ' ') });
+
+                        var dictionary = new Dictionary<short, string>();
+                        foreach(var item in statuses)
+                        {
+                            dictionary.Add(item.Value, item.Name);
+                        }
+                        _statusCodes = new System.Collections.ObjectModel.ReadOnlyDictionary<short, string>(dictionary);
                     }
                 }
                 return _statusCodes;
